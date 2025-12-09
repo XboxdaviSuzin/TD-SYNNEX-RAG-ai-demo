@@ -828,8 +828,38 @@ def render_dashboard_tab():
             <li><strong>AI Labs:</strong> Demo workload that can run in TD SYNNEX IBM–Lenovo–NVIDIA AI labs for partner PoC testing.</li>
             <li><strong>Partner Enablement:</strong> Helps partners and resellers explore Cisco/HP/Dell products, pricing trends, and best-fit recommendations for EU customers.</li>
             <li><strong>Multi-Vendor Infrastructure:</strong> Designed for deployment on Azure Databricks and GPU-accelerated infrastructure used in TD SYNNEX Demo Labs.</li>
-            <li><strong>Academy-style Project:</strong> Structured like a capstone project (data engineering + RAG + evaluation + MLOps + agents).</li>
+            <li><strong>Academy-style Project:</strong> Structured like a capstone project (data engineering + RAG + evaluation + MLOps + <strong style="color: #9f7aea;">Agentic AI Systems</strong>).</li>
         </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Future Agentic AI Systems Panel
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, rgba(159,122,234,0.12) 0%, rgba(128,90,213,0.08) 100%); padding: 18px 22px; border-radius: 12px; margin: 15px 0; border: 1px solid rgba(159,122,234,0.25);">
+        <div style="color: #9f7aea; font-weight: 600; font-size: 1.05em; margin-bottom: 12px;">🤖 Future Agentic AI Systems</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.4em;">💰</span>
+                <div>
+                    <div style="color: white; font-weight: 600; font-size: 0.85em;">Pricing Agent</div>
+                    <div style="color: #a0aec0; font-size: 0.7em;">Competitive bundle optimization</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.4em;">📦</span>
+                <div>
+                    <div style="color: white; font-weight: 600; font-size: 0.85em;">Inventory Agent</div>
+                    <div style="color: #a0aec0; font-size: 0.7em;">Real-time stock checks</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.4em;">📣</span>
+                <div>
+                    <div style="color: white; font-weight: 600; font-size: 0.85em;">Marketing Agent</div>
+                    <div style="color: #a0aec0; font-size: 0.7em;">Vendor-specific promos</div>
+                </div>
+            </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
