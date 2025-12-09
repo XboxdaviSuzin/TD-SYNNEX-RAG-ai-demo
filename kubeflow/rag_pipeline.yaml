@@ -1,0 +1,264 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: td-synnex-rag-pipeline
+  namespace: kubeflow
+  labels:
+    app: td-synnex-rag
+    version: v2.0.0
+  annotations:
+    workflows.argoproj.io/description: "TD SYNNEX RAG Pipeline - Complete MLOps workflow"
+spec:
+  entrypoint: rag-pipeline
+  serviceAccountName: pipeline-runner
+  
+  # Pipeline parameters
+  arguments:
+    parameters:
+      - name: catalog-path
+        value: "s3://td-synnex-data/catalog/"
+      - name: embedding-model
+        value: "all-MiniLM-L6-v2"
+      - name: vector-db
+        value: "faiss"
+      - name: target-groundedness
+        value: "0.90"
+  
+  # Volume mounts
+  volumeClaimTemplates:
+    - metadata:
+        name: pipeline-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 50Gi
+  
+  templates:
+    # Main DAG
+    - name: rag-pipeline
+      dag:
+        tasks:
+          - name: data-ingestion
+            template: spark-etl
+            arguments:
+              parameters:
+                - name: input-path
+                  value: "{{workflow.parameters.catalog-path}}"
+          
+          - name: embedding-generation
+            template: embedding-job
+            dependencies: [data-ingestion]
+            arguments:
+              parameters:
+                - name: model
+                  value: "{{workflow.parameters.embedding-model}}"
+          
+          - name: vector-indexing
+            template: faiss-index
+            dependencies: [embedding-generation]
+            arguments:
+              parameters:
+                - name: db-type
+                  value: "{{workflow.parameters.vector-db}}"
+          
+          - name: model-evaluation
+            template: mlflow-eval
+            dependencies: [vector-indexing]
+            arguments:
+              parameters:
+                - name: threshold
+                  value: "{{workflow.parameters.target-groundedness}}"
+          
+          - name: deploy-decision
+            template: deploy-gate
+            dependencies: [model-evaluation]
+          
+          - name: model-serving
+            template: deploy-endpoint
+            dependencies: [deploy-decision]
+            when: "{{tasks.deploy-decision.outputs.result}} == 'deploy'"
+
+    # Spark ETL Job
+    - name: spark-etl
+      inputs:
+        parameters:
+          - name: input-path
+      container:
+        image: td-synnex/spark-etl:v2.0.0
+        command: [python, /app/spark_etl.py]
+        args:
+          - --input-path={{inputs.parameters.input-path}}
+          - --output-path=/data/processed
+        resources:
+          limits:
+            memory: "8Gi"
+            cpu: "4000m"
+          requests:
+            memory: "4Gi"
+            cpu: "2000m"
+        volumeMounts:
+          - name: pipeline-data
+            mountPath: /data
+      outputs:
+        parameters:
+          - name: record-count
+            valueFrom:
+              path: /tmp/record_count.txt
+
+    # Embedding Generation
+    - name: embedding-job
+      inputs:
+        parameters:
+          - name: model
+      container:
+        image: td-synnex/embeddings:v2.0.0
+        command: [python, /app/generate_embeddings.py]
+        args:
+          - --model={{inputs.parameters.model}}
+          - --input-path=/data/processed
+          - --output-path=/data/embeddings
+          - --quantize=true
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+            memory: "16Gi"
+            cpu: "4000m"
+          requests:
+            memory: "8Gi"
+            cpu: "2000m"
+        volumeMounts:
+          - name: pipeline-data
+            mountPath: /data
+      outputs:
+        parameters:
+          - name: embedding-dim
+            valueFrom:
+              path: /tmp/embedding_dim.txt
+
+    # FAISS Index Building
+    - name: faiss-index
+      inputs:
+        parameters:
+          - name: db-type
+      container:
+        image: td-synnex/faiss-indexer:v2.0.0
+        command: [python, /app/build_index.py]
+        args:
+          - --embeddings-path=/data/embeddings
+          - --index-path=/data/index
+          - --index-type=IVF256,Flat
+          - --db-type={{inputs.parameters.db-type}}
+        resources:
+          limits:
+            memory: "32Gi"
+            cpu: "8000m"
+        volumeMounts:
+          - name: pipeline-data
+            mountPath: /data
+      outputs:
+        artifacts:
+          - name: faiss-index
+            path: /data/index
+            s3:
+              bucket: td-synnex-models
+              key: indexes/faiss/{{workflow.name}}
+
+    # MLflow Evaluation
+    - name: mlflow-eval
+      inputs:
+        parameters:
+          - name: threshold
+      container:
+        image: td-synnex/mlflow-eval:v2.0.0
+        command: [python, /app/evaluate.py]
+        args:
+          - --index-path=/data/index
+          - --threshold={{inputs.parameters.threshold}}
+        env:
+          - name: MLFLOW_TRACKING_URI
+            value: "http://mlflow.kubeflow.svc.cluster.local:5000"
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: openai-secret
+                key: api-key
+        resources:
+          limits:
+            memory: "8Gi"
+            cpu: "2000m"
+        volumeMounts:
+          - name: pipeline-data
+            mountPath: /data
+      outputs:
+        parameters:
+          - name: groundedness
+            valueFrom:
+              path: /tmp/groundedness.txt
+          - name: passed
+            valueFrom:
+              path: /tmp/passed.txt
+
+    # Deployment Gate
+    - name: deploy-gate
+      script:
+        image: python:3.10-slim
+        command: [python]
+        source: |
+          import json
+          
+          # Read evaluation results
+          with open('/tmp/results.json', 'r') as f:
+              results = json.load(f)
+          
+          groundedness = results.get('groundedness', 0)
+          threshold = 0.90
+          
+          if groundedness >= threshold:
+              print('deploy')
+          else:
+              print('skip')
+      outputs:
+        parameters:
+          - name: result
+            valueFrom:
+              path: /tmp/decision.txt
+
+    # Model Serving Deployment
+    - name: deploy-endpoint
+      container:
+        image: td-synnex/model-server:v2.0.0
+        command: [python, /app/deploy.py]
+        args:
+          - --model-path=/data/index
+          - --endpoint-name=td-synnex-rag-prod
+          - --replicas=3
+        env:
+          - name: AZURE_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: azure-credentials
+                key: client-id
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: azure-credentials
+                key: client-secret
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        volumeMounts:
+          - name: pipeline-data
+            mountPath: /data
+
+  # Cleanup after completion
+  onExit: cleanup
+  
+  # Exit handler
+  - name: cleanup
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args:
+        - echo "Pipeline completed. Cleaning up resources..."

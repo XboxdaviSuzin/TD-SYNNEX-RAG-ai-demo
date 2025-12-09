@@ -1,0 +1,220 @@
+# ===========================================
+# TD SYNNEX RAG Project - .gitignore
+# ===========================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# ===========================================
+# Virtual Environments & Secrets
+# ===========================================
+.env
+.env.*
+!.env.example
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Secrets and credentials (NEVER COMMIT!)
+.env.local
+.env.production
+.env.development
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.yaml
+secrets.json
+credentials.json
+*credentials*.json
+*secrets*.yaml
+service-account*.json
+
+# ===========================================
+# IDE & Editor Files
+# ===========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# ===========================================
+# Jupyter & Notebooks
+# ===========================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ===========================================
+# Data Files (processed locally)
+# ===========================================
+*.csv
+*.parquet
+*.delta/
+*.xlsx
+*.xls
+data/raw/
+data/processed/
+data/uploads/
+
+# PDF files (test/sample documents)
+*.pdf
+
+# ===========================================
+# Model Artifacts & Checkpoints
+# ===========================================
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.safetensors
+models/
+checkpoints/
+saved_models/
+
+# ===========================================
+# Vector Store & Indices
+# ===========================================
+*.faiss
+*.index
+*.bin
+indexes/
+vector_stores/
+chroma_db/
+
+# ===========================================
+# Logs & Reports
+# ===========================================
+logs/
+*.log
+reports/
+*.html
+
+# ===========================================
+# MLflow & Experiment Tracking
+# ===========================================
+mlruns/
+mlflow.db
+mlartifacts/
+wandb/
+.neptune/
+
+# ===========================================
+# Temporary & Cache Files
+# ===========================================
+tmp/
+temp/
+*.tmp
+*.bak
+*.cache
+.streamlit/
+uploads/
+
+# ===========================================
+# OS Generated Files
+# ===========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ===========================================
+# Docker
+# ===========================================
+.docker/
+docker-compose.override.yml
+
+# ===========================================
+# Airflow
+# ===========================================
+airflow/logs/
+airflow/plugins/
+airflow.db
+airflow-webserver.pid
+airflow.cfg
+webserver_config.py
+
+# ===========================================
+# Node modules (if any frontend)
+# ===========================================
+node_modules/
+package-lock.json
+yarn.lock
+
+# ===========================================
+# Terraform (if used)
+# ===========================================
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# ===========================================
+# Databricks (local artifacts)
+# ===========================================
+.databricks/
+*.dbc
+
+# ===========================================
+# Internal/Development Documentation
+# ===========================================
+Project Setup, Run, and Deploy.md
+STEP_BY_STEP_GUIDE.md
