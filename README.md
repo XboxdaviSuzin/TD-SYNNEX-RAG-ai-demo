@@ -132,6 +132,14 @@ Net ROI: €1,250,000 - €42,000 = €1,208,000/year (2,876% ROI)
 - **Semantic Search** — Ask questions, get precise answers from your documents
 - **Knowledge Base** — Transform any document into a queryable AI system
 
+#### 🌐 Data Ingestion & "Web Scraping" Clarification
+The system uses **LangChain's `WebBaseLoader`** to ethically and efficiently ingest content from valid URLs.
+*   **Not Invalid Scraping**: We do not use "bots" or "crawlers" that bypass protections.
+*   **Standard Retrieval**: It performs a standard HTTP GET request (similar to your browser) to fetch the HTML content.
+*   **Parsing**: The HTML is parsed (using `BeautifulSoup` under the hood) to extract readable text, removing boilerplate like navigation bars and footers.
+*   **Chunking**: This text is then standardized, chunked, and embedded just like a PDF or Text file.
+*   *Note: This ensures we strictly process the specific page provided by the user for context, maintaining compliance and accuracy.*
+
 ### 🛠️ Pipeline Architecture
 - **Detailed Architecture Diagram** — Complete RAG chatbot architecture visualization
 - **Technology Stack** — Python, LangChain, FAISS, HuggingFace, MLflow, Databricks, Azure
@@ -396,7 +404,7 @@ log_feedback_to_delta(
 |--------|-------|-------------|
 | **User Satisfaction** | 94% (7d) | Positive feedback rate |
 | **Total Responses** | 50+ | Logged for analysis |
-| **Feedback Table** | `td_synnex_catalog.rag_feedback` | Delta table with lineage |
+| **Feedback Table** | `rusefx.rag_schema.rag_feedback` | Delta table with lineage |
 
 ### Latency Optimization & Quantization
 
@@ -454,9 +462,9 @@ if any(kw in query.lower() for kw in out_of_scope_keywords):
 
 | Agent | Function | API/Table |
 |-------|----------|-----------|
-| **💰 Pricing Optimization** | Suggests competitive bundles | `pricing_api`, `td_synnex_catalog.pricing` |
-| **📦 Inventory Check** | Real-time stock levels | `warehouse_api`, `td_synnex_catalog.inventory` |
-| **📣 Marketing Campaign** | Generates vendor-specific promos | `marketing_api`, `td_synnex_catalog.campaigns` |
+| **💰 Pricing Optimization** | Suggests competitive bundles | `pricing_api`, `rusefx.rag_schema.pricing` |
+| **📦 Inventory Check** | Real-time stock levels | `warehouse_api`, `rusefx.rag_schema.inventory` |
+| **📣 Marketing Campaign** | Generates vendor-specific promos | `marketing_api`, `rusefx.rag_schema.campaigns` |
 
 ### Agent Workflow Example (Multi-Step)
 
@@ -470,7 +478,7 @@ Agent Workflow:
 │   → Result: Catalyst 9300-48P (PoE+, 48 ports)                 │
 ├─────────────────────────────────────────────────────────────────┤
 │ Step 2: CHECK HISTORICAL SALES                                  │
-│   → Query: td_synnex_catalog.sales WHERE vendor='Cisco'        │
+│   → Query: rusefx.rag_schema.sales WHERE vendor='Cisco'        │
 │   → Result: 85% of healthcare customers also buy Meraki AP     │
 ├─────────────────────────────────────────────────────────────────┤
 │ Step 3: PROPOSE UPSELL/CROSS-SELL                              │

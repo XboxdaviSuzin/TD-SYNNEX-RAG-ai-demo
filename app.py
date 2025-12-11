@@ -432,7 +432,7 @@ def init_session_state():
 def log_query_to_delta(query: str, source: str, response: str = ""):
     """
     Log user queries to Delta table for analytics and retraining.
-    In production, this would write to: td_synnex_catalog.query_logs
+    In production, this would write to: rusefx.rag_schema.query_logs
     """
     query_record = {
         "query": query,
@@ -577,7 +577,7 @@ def query_databricks_endpoint(query: str) -> dict:
 def log_feedback_to_delta(response_id: str, query: str, answer: str, feedback: str, timestamp: str):
     """
     Log user feedback to Delta table for RLHF-style training.
-    Writes to: td_synnex_catalog.rag_feedback
+    Writes to: rusefx.rag_schema.rag_feedback
     
     Schema:
     - response_id: STRING
@@ -610,7 +610,7 @@ def log_feedback_to_delta(response_id: str, query: str, answer: str, feedback: s
             sql_api_url = f"{base_url}/api/2.0/sql/statements"
             
             sql_query = f"""
-            INSERT INTO td_synnex_catalog.rag_feedback 
+            INSERT INTO rusefx.rag_schema.rag_feedback 
             (response_id, query, answer, feedback, timestamp, user_session)
             VALUES ('{response_id}', '{query[:200].replace("'", "''")}', '{answer[:300].replace("'", "''")}', 
                     '{feedback}', '{timestamp}', 'demo_session')
@@ -631,7 +631,7 @@ def log_feedback_to_delta(response_id: str, query: str, answer: str, feedback: s
 def log_document_to_delta(doc_type: str, doc_name: str, content_preview: str, chunks_count: int):
     """
     Log uploaded documents to Delta table for audit and reprocessing.
-    Writes to: td_synnex_catalog.uploaded_documents
+    Writes to: rusefx.rag_schema.uploaded_documents
     
     Schema:
     - doc_id: STRING (auto-generated)
@@ -671,7 +671,7 @@ def log_document_to_delta(doc_type: str, doc_name: str, content_preview: str, ch
             safe_preview = (content_preview[:300] if content_preview else "").replace("'", "''")
             
             sql_query = f"""
-            INSERT INTO td_synnex_catalog.uploaded_documents 
+            INSERT INTO rusefx.rag_schema.uploaded_documents 
             (doc_id, doc_type, doc_name, content_preview, chunks_count, timestamp, user_session, status)
             VALUES ('{doc_id}', '{doc_type}', '{safe_name}', '{safe_preview}', 
                     {chunks_count}, '{doc_record['timestamp']}', 'demo_session', 'processed')
