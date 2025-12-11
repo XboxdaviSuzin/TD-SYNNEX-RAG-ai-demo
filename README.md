@@ -629,7 +629,7 @@ MIT License - feel free to use this for your own projects!
 ## 👨‍💻 Author
 
 **Sridharan Kaliyamoorthy**  
-[GitHub](https://github.com/sridharankaliyamoorthy) | [LinkedIn](https://linkedin.com/in/sridharankaliyamoorthy)
+[GitHub](https://github.com/sridharankaliyamoorthy) 
 
 ---
 
