@@ -293,10 +293,17 @@ Use these queries during your demo to showcase different capabilities of the sys
     *   *Goal*: Demonstrate safety guardrails (system should refuse politely).
 
 ### 2️⃣ RAG Q&A (Document Chat)
-*   **Scenario**: Upload a PDF (e.g., a Cisco Datasheet or Supplier Agreement).
-*   **Summarization**: "Summarize the key features of this product."
-*   **Specific Extraction**: "What is the warranty period mentioned in the document?"
-*   **Reasoning**: "Does this document mention support for PoE+?"
+*   **Scenario A: PDF Document**
+    *   *Action*: Upload a Cisco/HP/Dell datasheet.
+    *   *Query*: "Summarize the key features of this product."
+    *   *Query*: "Does this document mention support for PoE+?"
+
+*   **Scenario B: URL Analysis (Web Ingestion)**
+    *   *Action*: Select **"Link"** input type and paste: `https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2024`
+    *   *Test Query 1*: "What was the total revenue for the third quarter?"
+    *   *Test Query 2*: "How much was the Data Center revenue?"
+    *   *Test Query 3*: "What is the outlook for the fourth quarter?"
+    *   *Test Query 4*: "What was the GAAP earnings per diluted share?"
 
 ---
 
