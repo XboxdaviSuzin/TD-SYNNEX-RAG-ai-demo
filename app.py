@@ -1275,7 +1275,7 @@ def render_rag_qa_tab():
         
         # Display Q&A History with feedback buttons
         if st.session_state.qa_history:
-            st.markdown("### 📋 Answers Found:")
+            st.markdown("### 📋 Retrieval Results:")
             
             for idx, qa in enumerate(reversed(st.session_state.qa_history[-3:])):
                 response_id = qa.get('id', f"rag_resp_{idx}")
