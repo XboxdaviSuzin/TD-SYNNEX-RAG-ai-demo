@@ -13,6 +13,7 @@ import numpy as np
 from io import BytesIO
 from datetime import datetime
 import base64
+import re
 
 # Page configuration
 st.set_page_config(
@@ -1281,33 +1282,17 @@ def render_rag_qa_tab():
                 st.markdown(f"**🧑 You:** {qa['q']}")
                 
                 # Display answer cards
-                st.markdown(f"""
-                <div class="product-card">
-                    <div class="product-header">
-                        <span style="color: #e2e8f0; font-weight: 600;">🤖 AI Response from Document</span>
-                        <span style="color: #718096; font-size: 0.8em;">{qa['t']}</span>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                # Display answer context with clean Markdown
+                st.markdown(f"#### 📄 Context from Document ({qa['t']})")
                 
-                # Show each source document with clean formatting
                 for i, doc in enumerate(qa.get('docs', []), 1):
-                    # Clean up the content - remove excess whitespace and format nicely
                     content = doc.page_content.strip()
-                    # Replace multiple newlines with single newline
-                    content = ' '.join(content.split())
-                    # Truncate and add ellipsis
-                    content = content[:600] + "..." if len(content) > 600 else content
+                    # clean up potential excess whitespace but preserve structure
+                    content = re.sub(r'\n{3,}', '\n\n', content)
                     
-                    st.markdown(f"""
-                    <div style="background: linear-gradient(135deg, rgba(102,126,234,0.08) 0%, rgba(118,75,162,0.05) 100%); padding: 18px; border-radius: 12px; margin: 12px 0; border-left: 4px solid #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                            <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75em; font-weight: 600;">📄 Source {i}</span>
-                            <span style="color: #718096; font-size: 0.75em;">Relevance: High</span>
-                        </div>
-                        <div style="color: #e2e8f0; line-height: 1.7; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word;">{content}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown(f"**Source {i}:**")
+                    st.markdown(f"> {content}")
+                    st.markdown("---")
                 
                 # Feedback buttons - prominent with labels
                 st.markdown('<div style="margin: 8px 0 20px 0;">', unsafe_allow_html=True)
