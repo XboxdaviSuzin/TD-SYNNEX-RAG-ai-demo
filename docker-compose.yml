@@ -6,10 +6,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: td-synnex/rag-demo:latest
+    image: ghcr.io/sridharankaliyamoorthy/td-synnex-rag-ai-demo:latest
     container_name: td-synnex-rag-app
     ports:
-      - "8501:8501"
+      - '8501:8501'
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow:5000
       - WANDB_API_KEY=${WANDB_API_KEY:-}
@@ -26,7 +26,7 @@ services:
       - rag-network
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8501/_stcore/health" ]
+      test: ['CMD', 'curl', '-f', 'http://localhost:8501/_stcore/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -36,7 +36,7 @@ services:
     image: ghcr.io/mlflow/mlflow:v2.10.0
     container_name: mlflow-server
     ports:
-      - "5000:5000"
+      - '5000:5000'
     environment:
       - MLFLOW_BACKEND_STORE_URI=sqlite:///mlflow.db
       - MLFLOW_DEFAULT_ARTIFACT_ROOT=/mlflow/artifacts
@@ -53,7 +53,7 @@ services:
     image: redis:7-alpine
     container_name: redis-cache
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes
@@ -66,8 +66,8 @@ services:
     image: nginx:alpine
     container_name: nginx-proxy
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
@@ -86,4 +86,3 @@ networks:
 volumes:
   mlflow_data:
   redis_data:
-
