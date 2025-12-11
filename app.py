@@ -1288,12 +1288,9 @@ def render_rag_qa_tab():
                 
                 for i, doc in enumerate(qa.get('docs', []), 1):
                     content = doc.page_content.strip()
-                    # Clean up: consistent newlines but preserve table structure
-                    content = re.sub(r'\n{3,}', '\n\n', content)
-                    
-                    # Escape HTML characters to prevent rendering issues
-                    import html
-                    content = html.escape(content)
+                    # Aggressively clean up: remove empty lines to fix "too much gap"
+                    lines = [line.strip() for line in content.split('\n')]
+                    content = '\n'.join([line for line in lines if line])
                     
                     st.markdown(f"**Source {i}**")
                     st.code(content, language="text")
