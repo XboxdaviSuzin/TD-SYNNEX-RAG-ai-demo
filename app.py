@@ -1286,11 +1286,22 @@ def render_rag_qa_tab():
                 # Display answer context with premium card design
                 st.markdown(f"#### 📄 Context from Document ({qa['t']})")
                 
-                for i, doc in enumerate(qa.get('docs', []), 1):
                     content = doc.page_content.strip()
-                    # Aggressively clean up: remove empty lines to fix "too much gap"
-                    lines = [line.strip() for line in content.split('\n')]
-                    content = '\n'.join([line for line in lines if line])
+                    
+                    # Heuristic: Reconstruct tables by joining short consecutive lines
+                    lines = [line.strip() for line in content.split('\n') if line.strip()]
+                    reconstructed = []
+                    if lines:
+                        current_row = lines[0]
+                        for next_line in lines[1:]:
+                            # If both lines are short (likely table cells), join them
+                            if len(current_row) < 60 and len(next_line) < 60:
+                                current_row += "   |   " + next_line
+                            else:
+                                reconstructed.append(current_row)
+                                current_row = next_line
+                        reconstructed.append(current_row)
+                        content = '\n'.join(reconstructed)
                     
                     st.markdown(f"**Source {i}**")
                     st.code(content, language="text")
