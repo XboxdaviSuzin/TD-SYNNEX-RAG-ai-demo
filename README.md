@@ -278,6 +278,28 @@ Response: Shows region-specific products, local certifications,
 
 ---
 
+## 🧪 Test Scenarios & Queries
+
+Use these queries during your demo to showcase different capabilities of the system.
+
+### 1️⃣ Product Chat (Catalog Search)
+*   **Basic Search**: "Best Cisco switch for SMB"
+    *   *Goal*: Showcases basic retrieval and pricing.
+*   **Specific Constraint**: "HP server with 32GB RAM under 2000 EUR"
+    *   *Goal*: Demonstrates numerical reasoning and filtering.
+*   **Comparison**: "Compare Dell PowerEdge R750 vs HP ProLiant DL380"
+    *   *Goal*: Shows the model's ability to synthesize a comparison.
+*   **Out of Scope (Guardrail)**: "Who won the football match yesterday?"
+    *   *Goal*: Demonstrate safety guardrails (system should refuse politely).
+
+### 2️⃣ RAG Q&A (Document Chat)
+*   **Scenario**: Upload a PDF (e.g., a Cisco Datasheet or Supplier Agreement).
+*   **Summarization**: "Summarize the key features of this product."
+*   **Specific Extraction**: "What is the warranty period mentioned in the document?"
+*   **Reasoning**: "Does this document mention support for PoE+?"
+
+---
+
 ## 🚀 Quick Start
 
 ### Option 1: Run Locally
