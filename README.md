@@ -6,7 +6,7 @@
 [![Azure Databricks](https://img.shields.io/badge/Azure-Databricks-orange.svg)](https://azure.microsoft.com/en-us/products/databricks)
 [![MLflow](https://img.shields.io/badge/MLflow-Model%20Registry-blue.svg)](https://mlflow.org)
 
-> **🚀 [Live Demo: https://td-synnex-rag-ai-demo.streamlit.app/](https://td-synnex-rag-ai-demo.streamlit.app/)**
+> **🚀 [Live Demo: https://td-synnex-rag-ai-demo.streamlit.app/](https://td-synnex-rag-ai-demo-v2.streamlit.app/)**
 
 > **Version 2.1.1** | Complete MLOps Pipeline for Enterprise Product Intelligence — Advanced RAG Q&A System powered by Azure Databricks
 
