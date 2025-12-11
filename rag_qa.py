@@ -306,7 +306,7 @@ def answer_question(vectorstore, query):
                 content = content[:500] + "..."
             
             response += f"**Source {i}:**\n"
-            response += f"> {content}\n\n"
+            response += f"```text\n{content}\n```\n\n"
         
         response += "---\n"
         response += f"*Found {len(docs)} relevant sections from your documents.*"

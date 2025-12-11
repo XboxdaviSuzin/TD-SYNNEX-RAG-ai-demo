@@ -1295,20 +1295,9 @@ def render_rag_qa_tab():
                     import html
                     content = html.escape(content)
                     
-                    st.markdown(f"""
-                    <div style="background: rgba(30, 30, 40, 0.8); border-radius: 12px; margin-bottom: 16px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                        <div style="padding: 12px 16px; background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75em; font-weight: 600;">Source {i}</span>
-                                <span style="color: #a0aec0; font-size: 0.8em;">Document Extract</span>
-                            </div>
-                            <span style="font-size: 0.75em; color: #718096; font-family: monospace;">Relevance: High</span>
-                        </div>
-                        <div style="padding: 16px; background: rgba(0, 0, 0, 0.15);">
-                            <pre style="margin: 0; white-space: pre-wrap; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; font-size: 0.85em; line-height: 1.6; color: #e2e8f0; border: none; background: transparent; padding: 0;">{content}</pre>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown(f"**Source {i}**")
+                    st.code(content, language="text")
+                    st.markdown("---")
                 
                 # Feedback buttons - prominent with labels
                 st.markdown('<div style="margin: 8px 0 20px 0;">', unsafe_allow_html=True)
