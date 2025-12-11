@@ -1286,6 +1286,7 @@ def render_rag_qa_tab():
                 # Display answer context with premium card design
                 st.markdown(f"#### 📄 Context from Document ({qa['t']})")
                 
+                for i, doc in enumerate(qa.get('docs', []), 1):
                     content = doc.page_content.strip()
                     
                     # Heuristic: Reconstruct tables by joining short consecutive lines
